@@ -1,0 +1,398 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Cropilot - Soil Recommendation</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+  <!-- Favicons -->
+  <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+  <link href="{% static 'assets/img/favicon.png' %}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
+
+   <style>
+    /* ── Soil Result Card ── */
+    .soil-result-card {
+      background-color: var(--surface-color);
+      border-radius: 12px;
+      padding: 36px 40px;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+      margin-top: 28px;
+      border-top: 4px solid var(--accent-color);
+    }
+ 
+    .soil-result-card .result-heading {
+      font-family: var(--heading-font);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--heading-color);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+ 
+    .soil-result-card .result-heading i {
+      color: var(--accent-color);
+      font-size: 22px;
+    }
+ 
+    .soil-result-card .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+ 
+    @media (max-width: 576px) {
+      .soil-result-card .result-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+ 
+    .soil-result-card .result-item {
+      background-color: color-mix(in srgb, var(--accent-color), transparent 93%);
+      border-radius: 10px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+ 
+    .soil-result-card .result-item .item-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--accent-color);
+      font-family: var(--nav-font);
+    }
+ 
+    .soil-result-card .result-item .item-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--heading-color);
+      font-family: var(--heading-font);
+    }
+ 
+    .soil-result-card .result-reason {
+      background-color: color-mix(in srgb, var(--default-color), transparent 95%);
+      border-left: 4px solid var(--accent-color);
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+    }
+ 
+    .soil-result-card .result-reason .reason-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--accent-color);
+      font-family: var(--nav-font);
+      margin-bottom: 8px;
+    }
+ 
+    .soil-result-card .result-reason p {
+      font-size: 14px;
+      line-height: 1.75;
+      color: color-mix(in srgb, var(--default-color), transparent 15%);
+      margin: 0;
+    }
+</style>
+</head>
+<body class="departments-page">
+
+  <header id="header" class="header fixed-top">
+    <div class="branding d-flex align-items-center">
+      <div class="container position-relative d-flex align-items-center justify-content-between">
+        <a href="{% url 'FARMER_DASH' %}" class="logo d-flex align-items-center">
+          <img src="{% static 'assets/img/favicon.png' %}" alt="">
+          <h1 class="sitename">Cropilot</h1>
+        </a>
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            <li><a href="{% url 'FARMER_DASH' %}" class="active">Home</a></li>
+            <li><a href="{% url 'DISEASE_DETECTION' %}">Disease Detection</a></li>
+            <li><a href="{% url 'CROP_REQUIREMENTS' %}">Crop Requirements</a></li>
+            <li><a href="{% url 'ADVISORY' %}">Agri-Officer</a></li>
+            <li><a href="{% url 'MARKET_PRICES' %}">Market Price</a></li>
+            <li class="dropdown"><a href="#"><span>More Pages</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="">Write Feedback</a></li>
+              <li><a href="{% url 'ALL_CROPS' %}">Your Crops</a></li>
+              <li><a href="{% url 'ALL_REPORTS' %}">Disease Results</a></li>
+              <li><a href="{% url 'FARMER_PROFILE' %}">Profile</a></li>
+              <li><a href="{% url 'LOGOUT' %}">Log Out</a></li>
+            </ul>
+            </li>
+          </ul>
+          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+      <nav class="breadcrumbs">
+        <div class="container">
+          <ol>
+            <li><a href="{% url 'FARMER_DASH' %}">Home</a></li>
+            <li class="current">Soil Recommendation</li>
+          </ol>
+        </div>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <!-- Soil Recommendation Section -->
+    <section class="contact section">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row justify-content-center">
+          <div class="col-lg-12 col-xl-10">
+
+
+            <!-- Success / Error Messages -->
+            {% if error_messages %}
+                <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %} crop-alert alert-dismissible fade show" role="alert">
+                  <i class="bi {% if message.tags == 'error' %}bi-exclamation-circle{% else %}bi-check-circle{% endif %} me-2"></i>
+                  {{ error_messages }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+
+            <div class="contact-form-card" data-aos="fade-up" data-aos-delay="200">
+              <h2>Select Details</h2>
+              <p class="mb-4">Choose weather condition and soil type for accurate recommendation.</p>
+              
+
+              <form action="{% url 'API_CROP_REQUIREMENTS' %}" method="get" class="">
+                {% csrf_token %}
+                <!-- Soil Dropdown -->
+                <div class="mb-4" id="targetDiv">
+                  <label for="soil" class="form-label">Crop</label>
+                  <select class="form-select form-control" id="soil" name="input_crop" required>
+                    <option value="">-- Select Crop --</option>
+                    <option value="Cocoa">Cocoa</option>
+                    <option value="Tomato">Tomato</option>
+                    <option value="Potato">Potato</option>
+                    <option value="Rice">Rice</option>
+                  </select>
+                </div>
+
+                <div class="col-12 text-center mt-4">
+                  <button type="submit" class="btn btn-submit" 
+                  onclick="location.href='#targetDiv'">Get Soil Recommendation</button>
+                </div>
+
+              </form>
+            </div>
+<!-- ── Soil Result Card (shown only after form submission) ── -->
+            {% if result %}
+            <div class="soil-result-card" data-aos="fade-up" data-aos-delay="300">
+ 
+              <div class="result-heading">
+                <i class="bi bi-patch-check-fill"></i>
+                Soil Recommendation Result - {{ result.crop_name }}
+              </div>
+ 
+              <div class="result-grid">
+                <!-- Soil Type -->
+                <div class="result-item">
+                  <span class="item-label"><i class="bi bi-layers me-1"></i> Recommended Soil Type</span>
+                  <span class="item-value" >{{ result.suitable_soil }}</span>
+                </div>
+ 
+                <!-- pH Value -->
+                <div class="result-item">
+                  <span class="item-label"><i class="bi bi-droplet-half me-1"></i> Ideal pH Value</span>
+                  <span class="item-value">{{ result.ph_value }}</span>
+                </div>
+              </div>
+ 
+              <!-- Reason -->
+              <div class="result-reason">
+                <div class="reason-label"><i class="bi bi-info-circle me-1"></i> Why this soil?</div>
+                <p>{{ result.reason }}</p>
+              </div>
+
+              <!-- Climate -->
+              <div class="result-reason">
+                <div class="reason-label"><i class="bi bi-cloud-sun me-1"></i> Best climate</div>
+                <p>{{ result.suitable_climate }}</p>
+              </div>
+
+              <!-- fertilizer -->
+              <div class="result-reason">
+                <div class="reason-label"><i class="bi bi-flask me-1"></i> Fertilizers</div>
+                <p>{{ result.fertilizer }}</p>
+              </div>
+
+              <!-- Temprature -->
+              <div class="result-reason">
+                <div class="reason-label"><i class="bi bi-thermometer-half me-1"></i> Temprature</div>
+                <p>{{ result.temprature }}</p>
+              </div>
+              
+              <!-- rainfall -->
+              <div class="result-reason">
+                <div class="reason-label"><i class="bi bi-cloud-rain me-1"></i> Rainfall</div>
+                <p>{{ result.rainfall }}</p>
+              </div>
+
+              <!-- Crucial Factor -->
+              <div class="result-reason">
+                <div class="reason-label"><i class="bi bi-key me-1"></i> Crucial Factor</div>
+                <p>{{ result.crucial_factor }}</p>
+              </div>
+
+            </div>
+            {% endif %}
+            <!-- End Soil Result Card -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+ <!--footer-->
+  <footer id="footer" class="footer-16 footer position-relative">
+    <div class="container">
+      <div class="footer-main" data-aos="fade-up" data-aos-delay="100">
+        <div class="row align-items-start">
+
+          <div class="col-lg-5">
+            <div class="brand-section">
+              <a href="{% url 'INDEX' %}" class="logo d-flex align-items-center mb-4">
+                <span class="sitename">Cropilot</span>
+              </a>
+              <p class="brand-description">This is my BCA final-year project.</p>
+              <div class="contact-info mt-5">
+                
+                <div class="contact-item">
+                  <i class="bi bi-github"></i>
+                  <span><a href="https://github.com/jibintgeorgecareer-DEV">GITHUB</a></span>
+                </div>
+                <div class="contact-item">
+                  <i class="bi bi-linkedin"></i>
+                  <span><a href="https://linkedin.com/in/jibintgeorge">LinkedIn</a></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-7">
+            <div class="footer-nav-wrapper">
+              <div class="row">
+                <div class="col-6 col-lg-3">
+                  <div class="nav-column">
+                    <h6>Studio</h6>
+                    <nav class="footer-nav">
+                      <a href="#!">Our Story</a>
+                      <a href="#!">Design Process</a>
+                      <a href="#!">Portfolio</a>
+                      <a href="#!">Case Studies</a>
+                      <a href="#!">Awards</a>
+                    </nav>
+                  </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                  <div class="nav-column">
+                    <h6>Services</h6>
+                    <nav class="footer-nav">
+                      <a href="#!">Brand Identity</a>
+                      <a href="#!">Web Design</a>
+                      <a href="#!">Mobile Apps</a>
+                      <a href="#!">Digital Strategy</a>
+                      <a href="#!">Consultation</a>
+                    </nav>
+                  </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                  <div class="nav-column">
+                    <h6>Resources</h6>
+                    <nav class="footer-nav">
+                      <a href="#!">Design Blog</a>
+                      <a href="#!">Style Guide</a>
+                      <a href="#!">Free Assets</a>
+                      <a href="#!">Tutorials</a>
+                      <a href="#!">Inspiration</a>
+                    </nav>
+                  </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                  <div class="nav-column">
+                    <h6>Connect</h6>
+                    <nav class="footer-nav">
+                      <a href="#!">Start Project</a>
+                      <a href="#!">Schedule Call</a>
+                      <a href="#!">Join Newsletter</a>
+                      <a href="#!">Follow Updates</a>
+                      <a href="#!">Partnership</a>
+                    </nav>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+        <div class="bottom-content" data-aos="fade-up" data-aos-delay="300">
+          <div class="row align-items-center">
+            <div class="col-lg-6">
+              <div class="legal-links">
+                <a href="#!">Privacy Policy</a>
+                <a href="#!">Terms of Service</a>
+                <a href="#!">Cookie Policy</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  
+  <!-- Scroll Top -->
+  <a href="#!" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+  </a>
+
+  <!-- Preloader 
+  <div id="preloader"></div> -->
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+</html>

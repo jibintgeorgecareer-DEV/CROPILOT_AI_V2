@@ -1,0 +1,33 @@
+# Virtual Environment
+.my_env/
+.my_venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Database
+db.sqlite3
+
+# Media Uploads
+media/
+
+# Environment Variables
+.env
+
+# VS Code
+.vscode/
+
+# JetBrains
+.idea/
+
+# Logs
+*.log
+
+# Tensorflow Checkpoints
+*.h5.bak
+
+# OS Files
+Thumbs.db
+.DS_Store
