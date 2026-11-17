@@ -119,19 +119,19 @@ Predicted class → disease knowledge base from -> all_apps/ai_engine/disease_da
 - **Dataset:** [Kerala Cardamom Intelligence Dataset (KCID)](https://www.kaggle.com/datasets/noahjos/kerala-cardamom-intelligence-dataset-kcid)
 - **Base model:** EfficientNetB0 pre-trained on ImageNet (frozen feature extractor)
 - **Platform:** Kaggle (TensorFlow 2.21, Keras 3.13.2)
-- **Project Location:** all_apps/ai_engine/ml_models/cardamom_disease_model.h5
+- **Project Location:** `all_apps/ai_engine/ml_models/cardamom_disease_model.h5`
 
 #### Cocoa model — training summary
 
 - **Dataset:** [Cocoa Diseases](https://www.kaggle.com/datasets/zaldyjr/cacao-diseases)
 - **Base model:** MobileNetV2
-- **Project Location:** all_apps/ai_engine/ml_models/cocoa_disease_model.h5
+- **Project Location:** `all_apps/ai_engine/ml_models/cocoa_disease_model.h5`
 
 #### Potato & Tomato model — training summary
 
 - **Dataset:** [Potato & Tomato](https://www.kaggle.com/datasets/alyeko/potato-tomato-dataset)
 - **Base model:** MobileNetV2
-- **Project Location:** all_apps/ai_engine/ml_models/plant_disease_model.h5
+- **Project Location:** `all_apps/ai_engine/ml_models/plant_disease_model.h5`
 
 ---
 
