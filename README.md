@@ -285,7 +285,6 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-Open **http://127.0.0.1:8000/homepage/**
 
 > ⚠️ Models load only when Django runs with its auto-reloader (`runserver`). If you use `--noreload` or a production server, adjust the model-loading check in `apps.py`.
 
