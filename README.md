@@ -110,8 +110,8 @@ Predicted class → disease knowledge base from -> all_apps/ai_engine/disease_da
 
 | Crop | Architecture | Input | Classes |
 |---|---|---|---|
-| Cocoa | MobileNetV2 (transfer learning) | 224×224×3 | `Black Pod Rot`, 'Frosty Pod Rot`, 'Healthy', 'Pod Borer', `Witches Broom' |
-| Potato & Tomato | MobileNetV2 (transfer learning) | 224×224×3 | _(add your potato/tomato classes)_ |
+| Cocoa | MobileNetV2 (transfer learning) | 224×224×3 | `Black Pod Rot`, `Frosty Pod Rot`, `Healthy`, `Pod Borer`, `Witches Broom` |
+| Potato & Tomato | MobileNetV2 (transfer learning) | 224×224×3 | `Early Blight`, `Late Blight`, `Healthy` |
 | Cardamom | **EfficientNetB0** (transfer learning) | 224×224×3 | `Blight`, `Healthy`, `LeafSpot` |
 
 #### Cardamom model — training summary
