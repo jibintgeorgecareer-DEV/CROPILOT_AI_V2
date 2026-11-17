@@ -2,8 +2,6 @@
 
 > A Django REST API based platform that helps farmers **detect crop diseases from a leaf photo**, **get crop growing recommendations**, **check market prices**, and **communicate with agriculture officers** — all in one place.
 
-*Academic project (BCA 2026) — built by **Jibin T George**.*
-
 ---
 
 ## 📌 Table of Contents
