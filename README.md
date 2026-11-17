@@ -1,4 +1,4 @@
-# 🌱 CROPILOT V2 — AI-Powered Smart Farming Platform
+# 🌱 CROPILOT AI V2 — AI-Powered Farmer Support System.
 
 > A Django REST API based platform that helps farmers **detect crop diseases from a leaf photo**, **get crop growing recommendations**, **check market prices**, and **communicate with agriculture officers** — all in one place.
 
