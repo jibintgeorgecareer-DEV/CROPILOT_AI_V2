@@ -41,7 +41,7 @@ Farmers often lose crops to diseases they cannot identify early, and they strugg
 | 3 | **Crop Market Prices** | `all_apps/crop_prices` | Shows crop market prices to farmers |
 | 4 | **Farmer–Officer Communication** | `all_apps/advisory` | Farmers and agriculture officers exchange advice and queries |
 
-Also included: farmer dashboard, edit profile page, crop listing page and a farm-themed chatbot widget.
+Also included: farmer dashboard, edit profile page, crop listing page.
 
 ---
 
@@ -55,11 +55,11 @@ Also included: farmer dashboard, edit profile page, crop listing page and a farm
 | Image processing | Pillow, NumPy |
 | Database | SQLite (Django ORM) |
 | Frontend | HTML, CSS, JavaScript, Bootstrap |
-| Model training | Kaggle Notebooks |
+| Model training | [Kaggle Notebooks](https://www.kaggle.com/jibintgeorge/code) |
 
 ---
 
-## 🤖 Module 1 — AI Crop Disease Detection (Main Module)
+## 🤖 AI Crop Disease Detection (Main Module)
 
 📂 `all_apps/ai_engine`
 
@@ -71,7 +71,7 @@ The farmer selects a crop, uploads a leaf photo, and the system returns an insta
  Farmer uploads leaf image + selects crop
                 │
                 ▼
-      REST API: POST /ai/api-disease-detect/
+      REST API: POST 127.0.0.1:8000/ai/api-disease-detect/
                 │
         Image validated (serializer)
                 │
@@ -86,19 +86,26 @@ The farmer selects a crop, uploads a leaf photo, and the system returns an insta
  MobileNetV2  MobileNetV2    EfficientNetB0
    └────────────┴───────┬───────┘
                         ▼
-      Predicted class → disease knowledge base
-      (symptoms · impact · treatment)
+Predicted class → disease knowledge base from -> all_apps/ai_engine/disease_data.py
+           (symptoms · impact · treatment)
                         ▼
-      Report saved to DB → result page shown
+      Report saved to DB → result page shown (disease_result.html)
 ```
 
 ### Key design points
 
-- **Models load once at server start.** The three trained `.h5` models are loaded into memory when Django starts (`apps.py`), so every request reuses them and predictions stay fast instead of reloading a model each time.
+- **Models load once at server start.** The three trained `.h5` models and `tensorflow` & `keras` are loaded into memory when Django starts (`apps.py`), so every request reuses them and predictions stay fast instead of reloading a model each time (when edits/debug).
+  
 - **One model per crop group.** Each request is routed to the right model based on the selected crop (`views.py`).
-- **Model-specific preprocessing.** Images are resized to 224×224 and prepared in `utils.py`. MobileNetV2 models use inputs scaled to 0–1, while EfficientNetB0 expects raw 0–255 pixels, so preprocessing is handled per model.
-- **Rich results, not just a label.** Each prediction returns the disease name, confidence %, inference time, symptoms, impact and treatment from a disease knowledge base (`disease_data.py`).
+  
+- **Model-specific preprocessing.** Images are resized to 224×224, converted into RGB, calculated pixel intensity (image pre-processing) and prepared in `preprocess_crop_image() of utils.py`.
+  
+- MobileNetV2 models use inputs scaled to 0–1, while EfficientNetB0 expects raw 0–255 pixels, so preprocessing is handled per model.
+  
+- **Rich results, not just a label.** Each prediction that is like a mathematical probability, with that we calculate disease name, confidence %, inference time, symptoms, impact and treatment from a disease knowledge base (`disease_data.py`).
+  
 - **Reports are stored** per farmer so past detections can be reviewed.
+ 
 - **Cross-version compatibility.** The cardamom model was trained on Kaggle with a newer Keras than the local setup, so the loader includes a small compatibility patch for it.
 
 ### Deep learning models
