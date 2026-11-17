@@ -71,11 +71,11 @@ The farmer selects a crop, uploads a leaf photo, and the system returns an insta
  Farmer uploads leaf image + selects crop
                 │
                 ▼
-      REST API: POST 127.0.0.1:8000/ai/api-disease-detect/
+REST API: POST 127.0.0.1:8000/ai/api-disease-detect/
                 │
-        Image validated (serializer)
+     Image validated (serializer)
                 │
-          Routed by crop name
+        Routed by crop name
    ┌────────────┼──────────────┬──────────────┐
  Cocoa     Potato / Tomato   Cardamom
    │            │               │
@@ -99,9 +99,7 @@ Predicted class → disease knowledge base from -> all_apps/ai_engine/disease_da
 - **One model per crop group.** Each request is routed to the right model based on the selected crop (`views.py`).
   
 - **Model-specific preprocessing.** Images are resized to 224×224, converted into RGB, calculated pixel intensity (image pre-processing) and prepared in `preprocess_crop_image() of utils.py`.
-  
-- MobileNetV2 models use inputs scaled to 0–1, while EfficientNetB0 expects raw 0–255 pixels, so preprocessing is handled per model.
-  
+   
 - **Rich results, not just a label.** Each prediction that is like a mathematical probability, with that we calculate disease name, confidence %, inference time, symptoms, impact and treatment from a disease knowledge base (`disease_data.py`).
   
 - **Reports are stored** per farmer so past detections can be reviewed.
