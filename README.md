@@ -135,7 +135,7 @@ Predicted class → disease knowledge base from -> all_apps/ai_engine/disease_da
 
 ---
 
-## 🌾 Module 2 — Crop Requirements Recommendation
+## 🌾 Crop Requirements Recommendation
 
 📂 `all_apps/ai_engine`
 
@@ -144,24 +144,23 @@ The farmer types in any crop name and the system returns its growing requirement
 - 🪨 **Best soil type**
 - 🧪 **Recommended fertilizer**
 - 🌦️ **Suitable climate** (temperature, rainfall, season)
-- _(add any other fields your module returns, e.g. water needs, pH, sowing season)_
 
 This helps farmers plan before sowing and complements disease detection once the crop is growing.
 
 ---
 
-## 💹 Module 3 — Crop Market Prices
+## 💹 Crop Market Prices
 
 📂 `all_apps/crop_prices`
 
 Farmers can view current crop market prices so they can decide when and where to sell.
 
-- _(describe your data source, e.g. admin-updated prices or an external feed)_
-- _(describe what users can see, e.g. crop-wise price list, filter by crop or date)_
+- The Admin updates prices
+- User can see crop name, price, updates date
 
 ---
 
-## 💬 Module 4 — Farmer–Agriculture Officer Communication
+## 💬 Farmer–Agriculture Officer Communication
 
 📂 `all_apps/advisory`
 
@@ -170,8 +169,6 @@ A direct channel between farmers and agriculture officers:
 - Farmers can **send queries** about crop problems, practices or schemes
 - Agriculture officers can **view and respond** with expert advice
 - Conversations are stored so advice can be revisited
-
-_(adjust to match your implementation, e.g. message threads, status tracking, attachments)_
 
 ---
 
@@ -186,11 +183,9 @@ _(adjust to match your implementation, e.g. message threads, status tracking, at
 | `GET` | `/homepage/` | Home page | — |
 | `GET` | `/disease_detection/` | Disease detection upload page | Logged-in farmer |
 | `POST` | `/ai/api-disease-detect/` | **Detect crop disease from a leaf image** | Logged-in farmer |
-| _…_ | _(add crop recommendation URL)_ | Crop requirements recommendation | _(auth)_ |
-| _…_ | _(add crop prices URL)_ | Crop market prices | _(auth)_ |
-| _…_ | _(add advisory URL)_ | Farmer–officer communication | _(auth)_ |
-
-> Fill in the remaining rows from your `urls.py` files.
+| `POST` | `/ai/api-crop-requirements/` | Crop requirements recommendation | Logged-in farmer |
+| `GET` | `/market/` | Crop market prices | Logged-in farmer |
+| `POST` | `advisory/chat/` | Farmer–officer communication | Logged-in farmer |
 
 ---
 
@@ -215,14 +210,6 @@ Runs the AI model for the selected crop and returns the disease analysis.
 | `potato`, `tomato` | Potato/Tomato MobileNetV2 |
 | `cardamom` | Cardamom EfficientNetB0 |
 
-#### Example request (cURL)
-
-```bash
-curl -X POST http://127.0.0.1:8000/ai/api-disease-detect/ \
-  -H "Cookie: sessionid=<your-session-id>; csrftoken=<token>" \
-  -H "X-CSRFToken: <token>" \
-  -F "crop_name=cardamom" \
-  -F "image=@/path/to/leaf.jpg"
 ```
 
 #### Prediction data returned for each request
@@ -249,15 +236,6 @@ curl -X POST http://127.0.0.1:8000/ai/api-disease-detect/ \
 
 > The endpoint currently renders these fields into the result page as HTML. The JSON above shows the data available to the page.
 
-#### Responses
-
-| Status | Meaning |
-|---|---|
-| `200 OK` | Result page rendered with predictions |
-| `200 OK` (error message) | Model failed internally — page shows an "AI Model is Not Working" message |
-| `400 Bad Request` | Missing, empty or corrupted image (serializer errors returned as JSON) |
-| `403 Forbidden` | Not logged in / missing CSRF token |
-
 ---
 
 ## 📁 Project Structure
@@ -273,15 +251,13 @@ CROPILOT_AI_V2/
 │   │   ├── disease_data.py      # Class names, symptoms, impact, treatments
 │   │   └── ml_models/           # Trained .h5 models (cocoa, potato/tomato, cardamom)
 │   ├── advisory/                # Farmer–officer communication
+│   ├── authentication/          # Django authenticate() & login()
+│   ├── crop_management/         # Store details of farmer crops
 │   └── crop_prices/             # Crop market prices
 ├── templates/                   # HTML templates
 ├── static/                      # CSS, JS, images
 ├── manage.py
 └── requirements.txt
-```
-
-> Adjust to match your repository.
-
 ---
 
 ## ⚙️ Installation & Setup
@@ -297,7 +273,7 @@ python -m venv .my_env
 # source .my_env/bin/activate     # Linux / macOS
 
 # 3. Install dependencies
-pip install -r requirements.txt
+pip install django djangorestframework tensorflow keras pillow numpy
 
 # 4. Apply migrations
 python manage.py migrate
